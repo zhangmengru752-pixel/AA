@@ -1,11 +1,119 @@
-name: Update Wiki Page
+import { Sparkles, FileText, GraduationCap, CheckCircle } from 'lucide-react';
+import { FeatureCard } from './components/FeatureCard';
+import { StatsSection } from './components/StatsSection';
+import { Badge } from './components/ui/badge';
+import { ImageWithFallback } from './components/figma/ImageWithFallback';
 
-on:
-  workflow_dispatch:
+export default function App() {
+  const handleOptimizeResume = () => {
+    console.log('优化简历');
+    // TODO: 导航到简历优化页面
+  };
 
-jobs:
-  update-wiki:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Say hello
-        run: echo "hello"
+  const handleCreateResume = () => {
+    console.log('创建简历');
+    // TODO: 导航到简历创建页面
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+      {/* SVG Gradient Definition */}
+      <svg width="0" height="0" style={{ position: 'absolute' }}>
+        <defs>
+          <linearGradient id="red-blue-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style={{ stopColor: '#ef4444', stopOpacity: 1 }} />
+            <stop offset="100%" style={{ stopColor: '#3b82f6', stopOpacity: 1 }} />
+          </linearGradient>
+        </defs>
+      </svg>
+
+      {/* Header */}
+      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-10">
+        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <GraduationCap className="w-8 h-8" style={{ stroke: 'url(#red-blue-gradient)' }} />
+            <span className="text-xl font-bold">简历助手</span>
+          </div>
+          <Badge variant="secondary">大学生专属</Badge>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <main className="max-w-6xl mx-auto px-4 py-12">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold mb-4">
+            让你的简历<span className="text-blue-600">脱颖而出</span>
+          </h1>
+          <p className="text-xl text-gray-600 mb-8">
+            专为大学生和应届生打造的智能简历工具
+          </p>
+          
+          {/* Hero Image */}
+          <div className="relative w-full max-w-3xl mx-auto mb-12 rounded-2xl overflow-hidden shadow-xl">
+            <ImageWithFallback
+              src="https://images.unsplash.com/photo-1660182922635-713da2867c82?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkaXZlcnNlJTIwY29sbGVnZSUyMHN0dWRlbnRzJTIwbWFsZSUyMGZlbWFsZSUyMGdyb3VwfGVufDF8fHx8MTc3MjA5MjM5N3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+              alt="大学生简历"
+              className="w-full h-64 object-cover"
+            />
+          </div>
+        </div>
+
+        {/* Features Section */}
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          <FeatureCard
+            icon={Sparkles}
+            title="智能优化简历"
+            description="AI驱动的简历分析，针对性提升简历质量，提高面试邀约率"
+            buttonText="立即优化"
+            onAction={handleOptimizeResume}
+            variant="accent"
+          />
+          
+          <FeatureCard
+            icon={FileText}
+            title="创建专业简历"
+            description="精选多款适合应届生的简历模板，快速创建符合企业要求的简历"
+            buttonText="开始创建"
+            onAction={handleCreateResume}
+          />
+        </div>
+
+        {/* Features List */}
+        <div className="bg-white rounded-2xl p-8 shadow-sm mb-12">
+          <h2 className="text-2xl font-bold mb-6 text-center">核心功能</h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {[
+              '智能语法检查和错别字纠正',
+              '关键词优化，提升简历匹配度',
+              '多种专业模板，适配不同行业',
+              '一键导出PDF、Word格式',
+              '简历评分和改进建议',
+              '实时预览和编辑'
+            ].map((feature, index) => (
+              <div key={index} className="flex items-center gap-3">
+                <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                <span className="text-gray-700">{feature}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Stats Section */}
+        <StatsSection />
+
+        {/* CTA Section */}
+        <div className="text-center mt-12 py-12">
+          
+          <p className="text-gray-600 mb-6">免费使用，无需注册，即刻开始</p>
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="border-t bg-white mt-12">
+        <div className="max-w-6xl mx-auto px-4 py-8 text-center text-gray-500 text-sm">
+          © 2026 简历助手 - 专注大学生求职
+        </div>
+      </footer>
+    </div>
+  );
+}
