@@ -1,3 +1,8 @@
 name: Update Wiki Page
-on: workflow_dispatch:
-jobs: update-wiki: runs-on: ubuntu-latest steps: - name: Say hello run: echo "hello"
+on: workflow_dispatch
+jobs:
+  update-wiki:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say hello
+        run: echo "hello"
