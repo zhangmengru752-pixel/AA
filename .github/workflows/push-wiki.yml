@@ -27,18 +27,18 @@ jobs:
           path: wiki
 
       - name: Create or update wiki page
-        env:
-          WIKI_BRANCH: ${{ github.event.inputs.branch }}
-          FILE_NAME: ${{ github.event.inputs.filename }}
         run: |
-          # Provide shell defaults if inputs were empty
+          # Use inputs (they are expanded into this script); provide defaults in shell
+          WIKI_BRANCH="${{ github.event.inputs.branch }}"
+          FILE_NAME="${{ github.event.inputs.filename }}"
           WIKI_BRANCH="${WIKI_BRANCH:-main}"
           FILE_NAME="${FILE_NAME:-Awesome+线上教育.md}"
 
-          cat > "wiki/$FILE_NAME" <<'EOF'
+          mkdir -p wiki
+          cat > "wiki/$FILE_NAME" <<'WIKI_EOF'
 # Awesome+线上教育
 
-这是一个收集线上教育（在线学习、慕课、教学平台、课程资源）优质资源的索引页面。目标是汇聚高质量课程、平台、教学工具与参考文章，方便学习者和教育工作者快速找到合适的资源。
+这是一个收集线上教育（在线学习、慕课、教学平台、课程资源）优质资源的索引页面。目标是汇聚高质量课程、平台、教学工具与参考文���，方便学习者和教育工作者快速找到合适的资源。
 
 ## 目录
 - 课程平台
@@ -60,7 +60,7 @@ jobs:
 - Stanford CS 系列 — 高质量大学课程
 
 ## 专业路线与学习路径
-- 数据科学路线：数学（线代/概率/统计） -> 编程（Python/R） -> 数据分析 -> 机器��习 -> 项目实践
+- 数据科学路线：数学（线代/概率/统计） -> 编程（Python/R） -> 数据分析 -> 机器学习 -> 项目实践
 - 前端开发：HTML/CSS -> JavaScript -> 框架（React/Vue） -> 构建工具 -> 项目实战
 
 ## 教学工具与平台
@@ -76,7 +76,7 @@ jobs:
 
 ---
 如需我把页面改为英文、拆分为多个主题页面（例如“免费课程集合”、“职业路线”各自独立页面），或把每一项扩展为带链接和说明的条目，我可以帮您把内容扩充成更详尽的版本。
-EOF
+WIKI_EOF
 
           cd wiki
           git config user.name "github-actions[bot]"
