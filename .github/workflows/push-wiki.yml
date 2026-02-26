@@ -17,20 +17,16 @@ jobs:
           token: ${{ secrets.WIKI_PAT }}
           path: wiki
 
-      - name: Create or update wiki page
-        run: |
-          set -euo pipefail
+      - name: Create or update wiki page via GitHub API
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const owner = 'zhangmengru752-pixel';
+            const repo = 'AA.wiki';
+            const path = 'Awesome+线上教育.md';
 
-          # 固定分支与文件名
-          WIKI_BRANCH="main"
-          FILE_NAME="Awesome+线上教育.md"
-
-          # 确保目录存在
-          mkdir -p wiki
-
-          # 写入文件（单引号 heredoc 防止变量展开）
-          cat > "wiki/$FILE_NAME" <<'WIKI_EOF'
-# Awesome+线上教育
+            // Page content (UTF-8)
+            const content = `# Awesome+线上教育
 
 这是一个收集线上教育（在线学习、慕课、教学平台、课程资源）优质资源的索引页面。目标是汇聚高质量课程、平台、教学工具与参考文章，方便学习者和教育工作者快速找到合适的资源。
 
@@ -69,12 +65,23 @@ jobs:
 欢迎提交 PR 或在本页下方提出建议与资源。请在贡献时附上资源描述与来源链接。
 
 ---
-如需我把页面改为英文、拆分为多个主题页面或扩展条目，我可以继续帮您改进。
-WIKI_EOF
+如需我把页面改为英文、拆分为多个主题页面或扩展条目，我可以继续帮您改进.
+`;
 
-          cd wiki
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add "$FILE_NAME"
-          git commit -m "Add/Update $FILE_NAME" || echo "No changes to commit"
-          git push origin HEAD:"$WIKI_BRANCH"
+            // Helper: get current file SHA (if exists)
+            let sha;
+            try {
+              const existing = await github.repos.getContent({ owner, repo, path });
+              sha = existing.data.sha;
+            } catch (err) {
+              // if not found, we'll create new file (sha stays undefined)
+              sha = undefined;
+            }
+
+            // Create or update file
+            await github.repos.createOrUpdateFileContents({
+              owner,
+              repo,
+              path,
+              message: sha ? 'Update Awesome+线上`
+
