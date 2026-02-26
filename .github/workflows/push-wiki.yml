@@ -19,11 +19,16 @@ jobs:
 
       - name: Create or update wiki page
         run: |
-          # 固定分支与文件名（避免在 YAML 中使用表达式）
-          WIKI_BRANCH='main'
-          FILE_NAME='Awesome+线上教育.md'
+          set -euo pipefail
 
+          # 固定分支与文件名
+          WIKI_BRANCH="main"
+          FILE_NAME="Awesome+线上教育.md"
+
+          # 确保目录存在
           mkdir -p wiki
+
+          # 写入文件（单引号 heredoc 防止变量展开）
           cat > "wiki/$FILE_NAME" <<'WIKI_EOF'
 # Awesome+线上教育
 
